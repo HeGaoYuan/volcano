@@ -49,8 +49,8 @@ func (sc *SchedulerCache) getOrCreateJob(pi *schedulingapi.TaskInfo) *scheduling
 		if pi.Pod.Spec.SchedulerName != sc.schedulerName {
 			klog.V(4).Infof("Pod %s/%s will not scheduled by %s, skip creating PodGroup and Job for it",
 				pi.Pod.Namespace, pi.Pod.Name, sc.schedulerName)
+			return nil
 		}
-		return nil
 	}
 
 	if _, found := sc.Jobs[pi.Job]; !found {
@@ -190,7 +190,8 @@ func (sc *SchedulerCache) deleteTask(pi *schedulingapi.TaskInfo) error {
 func (sc *SchedulerCache) deletePod(pod *v1.Pod) error {
 	pi := schedulingapi.NewTaskInfo(pod)
 
-	// Delete the Task in cache to handle Binding status.
+	// Delete the Task in cache
+	to handle Binding status.
 	task := pi
 	if job, found := sc.Jobs[pi.Job]; found {
 		if t, found := job.Tasks[pi.UID]; found {
